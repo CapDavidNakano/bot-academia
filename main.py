@@ -1,28 +1,28 @@
 import discord
 from discord.ext import commands
 import asyncio
-import sys
+import os  # OBLIGATORIO: Para leer los tokens en secreto sin que Discord los vea
 
 # =============================================================
 # ⚙️ CONFIGURACIÓN DE PERMISOS GENERALES
 # =============================================================
 intents = discord.Intents.default()
-intents.members = True          # OBLIGATORIO: Activar en el Discord Developer Portal
-intents.message_content = True  # OBLIGATORIO: Activar en el Discord Developer Portal
+intents.members = True          # Recuerda activarlo en el Discord Developer Portal
+intents.message_content = True  # Recuerda activarlo en el Discord Developer Portal
 
 # =============================================================
-# 🤖 BOT 1: CONTROL DE PRESENTACIONES E INGRESOS
+# 🤖 BOT 1: MEISHO DOTO (CONTROL DE PRESENTACIONES E INGRESOS)
 # =============================================================
 bot_presentaciones = commands.Bot(command_prefix="?", intents=intents)
 
 # 🆔 REEMPLAZA ESTAS IDS POR LAS DE TU SERVIDOR DE DISCORD
-ID_CANAL_PRESENTACIONES = 1437195348949991618  
+ID_CANAL_PRESENTACIONES = 1437195348949991618 
 ID_ROL_TEMPORAL = 1508598332698792117         
 ID_ROL_OFICIAL = 1508598587855212594          
 
 @bot_presentaciones.event
 async def on_ready():
-    print(f"✓ Bot Registro en línea como: {bot_presentaciones.user.name}")
+    print(f"✓ Meisho Doto en línea como: {bot_presentaciones.user.name}")
 
 @bot_presentaciones.event
 async def on_member_join(member):
@@ -37,8 +37,8 @@ async def on_message(message):
 
     if message.channel.id == ID_CANAL_PRESENTACIONES:
         miembro = message.author
-        rol_temporal = message.guild.get_role(ID_ROL_TEMPORAL)
-        rol_oficial = message.guild.get_role(ID_ROL_OFICIAL)
+        rol_temporal = member.guild.get_role(ID_ROL_TEMPORAL)
+        rol_oficial = member.guild.get_role(ID_ROL_OFICIAL)
 
         try:
             if rol_oficial and rol_oficial not in miembro.roles:
@@ -47,7 +47,7 @@ async def on_message(message):
                 await miembro.remove_roles(rol_temporal)
 
             confirmacion = (
-                f"✨🏆 ꧁𓊈𒆜★彡[ **ɪɴꜱᴄʀɪᴘᴄɪóɴ ᴀᴘʀᴏʙᴀᴅᴀ** ]彡★𒆜𓊉꧂ 🐎✨\n\n"
+                f"✨🏆 ꧁𓊈𒆜★彡[ **ɪɴꜱᴄʀɪᴘᴄɪÓɴ ᴀᴘʀᴏʙᴀᴅᴀ** ]彡★𒆜𓊉꧂ 🐎✨\n\n"
                 f"¡Felicidades, {miembro.mention}! Tu ficha ha sido registrada con éxito.\n"
                 f"Se te ha otorgado el rango oficial de **{rol_oficial.name}**.\n\n"
                 f"🏁 ¡La pista completa ha sido desbloqueada! Disfruta de la academia."
@@ -59,14 +59,13 @@ async def on_message(message):
     await bot_presentaciones.process_commands(message)
 
 # =============================================================
-# 📜 BOT 2: EL CUSTODIO DEL MEGA-REGLAMENTO
+# 📜 BOT 2: DAIWA SCARLET (CUSTODIO DEL MEGA-REGLAMENTO)
 # =============================================================
-# Usamos un prefijo distinto ("!") para que no se confundan los comandos
 bot_reglas = commands.Bot(command_prefix="!", intents=intents)
 
 @bot_reglas.event
 async def on_ready():
-    print(f"✓ Bot Reglas en línea como: {bot_reglas.user.name}")
+    print(f"✓ Daiwa Scarlet en línea como: {bot_reglas.user.name}")
     print("-----------------------------------------")
     print(" 🏁 ¡AMBOS MOTORES CORRIENDO EN PARALELO! ")
     print("-----------------------------------------")
@@ -97,7 +96,7 @@ async def desplegar_reglamento(ctx):
         "•| 10 **[ᴘʟᴀᴢᴏ ᴅᴇ ɪɴꜱᴄʀɪᴘᴄɪÓɴ]** – Cuentas con un máximo de 24 horas para presentarte antes de ser retirado por sospecha de bot.\n"
         "•| 11 **[ᴠᴇʀɪꜰɪᴄᴀᴄɪÓɴ ʀᴇᴀʟ]** – No uses respuestas genéricas de una palabra en tu ficha. Queremos entrenadores reales.\n"
         "•| 12 **[ᴘʀɪᴠᴀᴄɪᴅᴀᴅ ᴅᴇ ᴅᴀᴛᴏꜱ]** – No compartas datos privados sensibles como direcciones exactas o números telefónicos.\n"
-        "•| 13 **[<b>ᴄᴇʀᴏ ᴇɴʟᴀᴄᴇꜱ ᴇxᴛᴇʀɴᴏꜱ</b>]** – Queda estrictamente prohibido colocar links de invitación a otros servidores o grupos en tu ficha.\n"
+        "•| 13 **[ᴄᴇʀᴏ ᴇɴʟᴀᴄᴇꜱ ᴇxᴛᴇʀɴᴏꜱ]** – Queda estrictamente prohibido colocar links de invitación a otros servidores o grupos en tu ficha.\n"
         "•| 14 **[ᴀɴᴛɪ-ᴇꜱᴘɪᴏɴᴀᴊᴇ]** – Usuarios que entren solo para sustraer miembros hacia otras redes serán baneados permanentemente.\n"
         "•| 15 **[ꜱᴇɢᴜʀɪᴅᴀᴅ ᴅɪɢɪᴛᴀʟ]** – Prohibido distribuir archivos ejecutables dañinos, software malicioso o herramientas de hackeo.\n"
         "•| 16 **[ᴄᴜᴇɴᴛᴀꜱ ᴀʟᴛᴇʀɴᴀꜱ]** – No se permite el uso de multicuentas (alts) para evadir sanciones o alterar las mecánicas del servidor."
@@ -142,17 +141,16 @@ async def on_command_error(ctx, error):
         await ctx.send("❌ No tienes la autoridad del Comité Tracen para usar este comando.", delete_after=5)
 
 # =============================================================
-# 🚀 FUNCIÓN MAESTRA: ARRANCAR AMBOS BOTS A LA VEZ
+# 🚀 ARRANQUE SEGURO CON VARIABLES DE ENTORNO
 # =============================================================
 async def main():
-    # Pon aquí los tokens correspondientes (pueden ser del mismo bot o de dos diferentes)
-    TOKEN_BOT_PRESENTACIONES = "MTQ2MzMwNDgwMjQxMzk2OTQ4OQ.Gd134X.PhZ7MIl-v10SxiVtfodgxKPkbaiPI-tPlUfq1A"
-    TOKEN_BOT_REGLAS = "MTI4Mjg5MDc4MDgwNDkxMTIwOA.G07JUR.dET3x82Vfjnd2zyVBkpMOW7CncODFalql8B42k"
+    # El sistema jala los tokens guardados en Render de forma invisible
+    TOKEN_BOT_PRESENTACIONES = os.environ.get("MTQ2MzMwNDgwMjQxMzk2OTQ4OQ.GLsXyC.DdcTQdPwmEQJJo0aUB79e-TFP8xVt7g_bLf1Lw")
+    TOKEN_BOT_REGLAS = os.environ.get("MTI4Mjg5MDc4MDgwNDkxMTIwOA.GPyNVD.QEpYcSeS0CTHlHcENE3GpSw7jJHQ8is__08fk4")
     
-    # Creamos las dos tareas para que inicien al mismo tiempo
     await asyncio.gather(
-        bot_presentaciones.start(MTQ2MzMwNDgwMjQxMzk2OTQ4OQ.Gd134X.PhZ7MIl-v10SxiVtfodgxKPkbaiPI-tPlUfq1A),
-        bot_reglas.start(TMTI4Mjg5MDc4MDgwNDkxMTIwOA.G07JUR.dET3x82Vfjnd2zyVBkpMOW7CncODFalql8B42k)
+        bot_presentaciones.start(MTQ2MzMwNDgwMjQxMzk2OTQ4OQ.GLsXyC.DdcTQdPwmEQJJo0aUB79e-TFP8xVt7g_bLf1Lw),
+        bot_reglas.start(MTI4Mjg5MDc4MDgwNDkxMTIwOA.GPyNVD.QEpYcSeS0CTHlHcENE3GpSw7jJHQ8is__08fk4)
     )
 
 if __name__ == "__main__":
